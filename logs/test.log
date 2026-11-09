@@ -1,0 +1,1555 @@
+2026-11-07 11:07:20,160 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 11:07:20,233 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sat, 07 Nov 2026 11:07:20 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-07 11:07:20,455 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 11:07:20,537 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:20,757 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 11:07:20,836 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:21,049 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 11:07:21,120 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:21,334 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 11:07:21,397 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:21,609 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 11:07:21,666 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:21,883 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 11:07:21,942 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:21,942 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 11:07:22,011 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:07:22,228 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 11:07:22,298 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:22,298 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 11:07:22,358 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:07:22,586 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 11:07:22,643 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:07:22,800 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 11:07:22,877 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:07:22,877 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 11:07:22,947 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 11:07:23,152 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:07:23,218 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:07:23,392 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 11:07:23,458 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sat, 07 Nov 2026 11:07:23 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sat, 07 Nov 2026 11
+2026-11-07 11:07:23,616 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:07:23,691 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:07:23,840 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 11:07:23,842 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:07:23,989 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 11:07:23,992 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:07:24,153 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 11:07:24,208 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-07 11:16:05,083 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 11:16:05,149 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": []
+}
+
+2026-11-07 11:16:05,362 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 11:16:05,429 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:05,667 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 11:16:05,735 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:05,957 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 11:16:06,020 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:06,242 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 11:16:06,318 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:06,544 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 11:16:06,607 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:06,835 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 11:16:06,911 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:06,911 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 11:16:06,989 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:16:07,233 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 11:16:07,298 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:07,299 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 11:16:07,373 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:16:07,608 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 11:16:07,681 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:16:07,845 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 11:16:07,908 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:16:07,908 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 11:16:07,971 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 11:16:08,187 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:16:08,250 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:16:08,420 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 11:16:08,493 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:16:08,754 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:16:08,818 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:16:08,976 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 11:16:08,979 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:16:09,132 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 11:16:09,134 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:16:09,288 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 11:16:09,347 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:56,157 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 11:25:56,235 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": []
+}
+
+2026-11-07 11:25:56,463 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 11:25:56,524 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:56,735 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 11:25:56,792 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:57,001 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 11:25:57,062 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:57,262 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 11:25:57,340 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:57,545 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 11:25:57,616 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:57,835 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 11:25:57,901 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:57,902 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 11:25:57,968 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:25:58,198 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 11:25:58,267 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:58,267 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 11:25:58,327 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:25:58,540 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 11:25:58,607 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:25:58,759 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 11:25:58,814 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:25:58,814 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 11:25:58,881 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 11:25:59,098 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:25:59,164 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:25:59,310 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 11:25:59,380 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:25:59,641 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:25:59,701 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:25:59,849 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 11:25:59,862 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:26:00,010 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 11:26:00,013 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:26:00,171 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 11:26:00,237 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:24,203 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 11:42:24,272 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": []
+}
+
+2026-11-07 11:42:24,486 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 11:42:24,544 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:24,749 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 11:42:24,807 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:25,009 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 11:42:25,068 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:25,287 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 11:42:25,353 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:25,545 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 11:42:25,603 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:25,836 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 11:42:25,921 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:25,921 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 11:42:25,995 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:42:26,225 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 11:42:26,312 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:26,313 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 11:42:26,389 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:42:26,606 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 11:42:26,662 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:42:26,826 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 11:42:26,884 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:42:26,884 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 11:42:26,944 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 11:42:27,162 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:42:27,219 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:42:27,364 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 11:42:27,429 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:42:27,665 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:42:27,723 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:42:27,879 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 11:42:27,881 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:42:28,020 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 11:42:28,022 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:42:28,162 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 11:42:28,238 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:47,995 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 11:44:48,063 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sat, 07 Nov 2026 11:44:47 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-07 11:44:48,284 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 11:44:48,344 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:48,562 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 11:44:48,630 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:48,849 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 11:44:48,908 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:49,118 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 11:44:49,186 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:49,395 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 11:44:49,463 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:49,678 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 11:44:49,738 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:49,738 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 11:44:49,798 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:44:50,004 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 11:44:50,080 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:50,080 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 11:44:50,149 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 11:44:50,344 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 11:44:50,411 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:44:50,556 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 11:44:50,615 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 11:44:50,615 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 11:44:50,673 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 11:44:50,890 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:44:50,946 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 11:44:51,091 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 11:44:51,158 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sat, 07 Nov 2026 11:44:51 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sat, 07 Nov 2026 11
+2026-11-07 11:44:51,310 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 11:44:51,377 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 11:44:51,516 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 11:44:51,529 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:44:51,691 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 11:44:51,693 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 11:44:51,846 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 11:44:51,903 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-07 15:12:37,809 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-07 15:12:37,880 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sat, 07 Nov 2026 15:12:37 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-07 15:12:38,099 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-07 15:12:38,167 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:38,396 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-07 15:12:38,470 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:38,699 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-07 15:12:38,767 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:38,978 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-07 15:12:39,045 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:39,262 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-07 15:12:39,328 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:39,555 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-07 15:12:39,625 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:39,625 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-07 15:12:39,692 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 15:12:39,921 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-07 15:12:39,998 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:39,998 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-07 15:12:40,067 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-07 15:12:40,264 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-07 15:12:40,321 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 15:12:40,486 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-07 15:12:40,544 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-07 15:12:40,544 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-07 15:12:40,611 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-07 15:12:40,829 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-07 15:12:40,888 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-07 15:12:41,061 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-07 15:12:41,118 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sat, 07 Nov 2026 15:12:41 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sat, 07 Nov 2026 15
+2026-11-07 15:12:41,285 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-07 15:12:41,342 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-07 15:12:41,493 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-07 15:12:41,503 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 15:12:41,668 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-07 15:12:41,670 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-07 15:12:41,823 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-07 15:12:41,882 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-08 10:12:13,221 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-08 10:12:13,288 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sun, 08 Nov 2026 10:12:13 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-08 10:12:13,519 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-08 10:12:13,582 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:13,800 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-08 10:12:13,870 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:14,090 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-08 10:12:14,162 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:14,378 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-08 10:12:14,451 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:14,671 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-08 10:12:14,732 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:14,943 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-08 10:12:15,002 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:15,002 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-08 10:12:15,073 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 10:12:15,286 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-08 10:12:15,367 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:15,367 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-08 10:12:15,429 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 10:12:15,666 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-08 10:12:15,736 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 10:12:15,899 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-08 10:12:15,958 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:12:15,958 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-08 10:12:16,038 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-08 10:12:16,255 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-08 10:12:16,315 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 10:12:16,474 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-08 10:12:16,543 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 10:12:16 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 10
+2026-11-08 10:12:16,696 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-08 10:12:16,764 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-08 10:12:16,934 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-08 10:12:16,947 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 10:12:17,093 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-08 10:12:17,096 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 10:12:17,254 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-08 10:12:17,314 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-08 10:30:21,006 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-08 10:30:21,076 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sun, 08 Nov 2026 10:30:20 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-08 10:30:21,295 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-08 10:30:21,364 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:21,591 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-08 10:30:21,659 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:21,882 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-08 10:30:21,943 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:22,160 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-08 10:30:22,218 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:22,453 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-08 10:30:22,522 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:22,745 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-08 10:30:22,812 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:22,812 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-08 10:30:22,891 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 10:30:23,097 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-08 10:30:23,173 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:23,174 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-08 10:30:23,234 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 10:30:23,457 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-08 10:30:23,527 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 10:30:23,683 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-08 10:30:23,753 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 10:30:23,754 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-08 10:30:23,821 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-08 10:30:24,044 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-08 10:30:24,104 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 10:30:24,263 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-08 10:30:24,321 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 10:30:24 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 10
+2026-11-08 10:30:24,480 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-08 10:30:24,540 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-08 10:30:24,696 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-08 10:30:24,699 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 10:30:24,868 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-08 10:30:24,870 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 10:30:25,027 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-08 10:30:25,087 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-08 15:10:51,974 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-08 15:10:52,054 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sun, 08 Nov 2026 15:10:51 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-08 15:10:52,291 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-08 15:10:52,362 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:52,576 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-08 15:10:52,635 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:52,863 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-08 15:10:52,932 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:53,162 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-08 15:10:53,223 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:53,436 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-08 15:10:53,509 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:53,731 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-08 15:10:53,801 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:53,801 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-08 15:10:53,862 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:10:54,087 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-08 15:10:54,156 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:54,157 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-08 15:10:54,216 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:10:54,457 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_both_fields@test.com', 'status': 1}
+2026-11-08 15:10:54,537 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:54,537 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'both_updated', 'status': 0}
+2026-11-08 15:10:54,606 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:10:54,832 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-08 15:10:54,900 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 15:10:55,061 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-08 15:10:55,122 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:10:55,122 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-08 15:10:55,200 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-08 15:10:55,413 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-08 15:10:55,471 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 15:10:55,626 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-08 15:10:55,705 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:10:55 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 15
+2026-11-08 15:10:55,871 - api_test - INFO - GET http://127.0.0.1:5000/api/users/2
+2026-11-08 15:10:55,930 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:10:55 GMT",
+    "email": "bob@test.com",
+    "id": 2,
+    "name": "bob",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 15:10:
+2026-11-08 15:10:56,082 - api_test - INFO - GET http://127.0.0.1:5000/api/users/3
+2026-11-08 15:10:56,151 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:10:56 GMT",
+    "email": "carol@test.com",
+    "id": 3,
+    "name": "carol",
+    "status": 0,
+    "update_time": "Sun, 08 Nov 2026 15
+2026-11-08 15:10:56,314 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-08 15:10:56,383 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-08 15:10:56,534 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-08 15:10:56,536 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:10:56,701 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-08 15:10:56,703 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:10:56,855 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-08 15:10:56,922 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-08 15:10:57,077 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '', 'email': 'empty@test.com'}
+2026-11-08 15:10:57,089 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:10:57,247 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'empty_email', 'email': ''}
+2026-11-08 15:10:57,259 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:25:48,684 - api_test - INFO - GET http://127.0.0.1:5000/api/users
+2026-11-08 15:25:48,752 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": [
+    {
+      "create_time": "Sun, 08 Nov 2026 15:25:48 GMT",
+      "email": "alice@test.com",
+      "id": 1,
+      "name": "alice",
+      "status": 1,
+      "update_time": "S
+2026-11-08 15:25:48,954 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dingyi', 'email': 'dingyi@test.com', 'status': 1}
+2026-11-08 15:25:49,014 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:49,246 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'eva', 'email': 'eva@test.com', 'status': 0}
+2026-11-08 15:25:49,317 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:49,531 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'test_user_with_a_very_long_name', 'email': 'long@test.com', 'status': 1}
+2026-11-08 15:25:49,590 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:49,825 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '张三丰', 'email': 'zhangsf@test.com', 'status': 1}
+2026-11-08 15:25:49,899 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:50,132 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'min', 'email': 'min@test.com', 'status': 1}
+2026-11-08 15:25:50,197 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:50,416 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'nostatus', 'email': 'nostatus@test.com'}
+2026-11-08 15:25:50,485 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:50,707 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_name_only@test.com', 'status': 1}
+2026-11-08 15:25:50,767 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:50,768 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'updated_name'}
+2026-11-08 15:25:50,828 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:25:51,039 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_status_only@test.com', 'status': 1}
+2026-11-08 15:25:51,099 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:51,100 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'status': 0}
+2026-11-08 15:25:51,173 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:25:51,394 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_update_both_fields@test.com', 'status': 1}
+2026-11-08 15:25:51,465 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:51,465 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/4 body={'name': 'both_updated', 'status': 0}
+2026-11-08 15:25:51,536 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u66f4\u65b0\u6210\u529f"
+}
+
+2026-11-08 15:25:51,755 - api_test - INFO - PUT http://127.0.0.1:5000/api/users/99999 body={'name': 'ghost'}
+2026-11-08 15:25:51,814 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 15:25:51,961 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'tmp', 'email': 'tmp_delete_normal@test.com', 'status': 1}
+2026-11-08 15:25:52,041 - api_test - INFO - Response 201: {
+  "code": 0,
+  "data": {
+    "id": 4
+  },
+  "msg": "\u521b\u5efa\u6210\u529f"
+}
+
+2026-11-08 15:25:52,041 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/4
+2026-11-08 15:25:52,119 - api_test - INFO - Response 200: {
+  "code": 0,
+  "msg": "\u5220\u9664\u6210\u529f"
+}
+
+2026-11-08 15:25:52,328 - api_test - INFO - DELETE http://127.0.0.1:5000/api/users/99999
+2026-11-08 15:25:52,387 - api_test - INFO - Response 404: {
+  "code": 404,
+  "msg": "\u7528\u6237\u4e0d\u5b58\u5728"
+}
+
+2026-11-08 15:25:52,562 - api_test - INFO - GET http://127.0.0.1:5000/api/users/1
+2026-11-08 15:25:52,638 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:25:52 GMT",
+    "email": "alice@test.com",
+    "id": 1,
+    "name": "alice",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 15
+2026-11-08 15:25:52,791 - api_test - INFO - GET http://127.0.0.1:5000/api/users/2
+2026-11-08 15:25:52,868 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:25:52 GMT",
+    "email": "bob@test.com",
+    "id": 2,
+    "name": "bob",
+    "status": 1,
+    "update_time": "Sun, 08 Nov 2026 15:25:
+2026-11-08 15:25:53,035 - api_test - INFO - GET http://127.0.0.1:5000/api/users/3
+2026-11-08 15:25:53,104 - api_test - INFO - Response 200: {
+  "code": 0,
+  "data": {
+    "create_time": "Sun, 08 Nov 2026 15:25:53 GMT",
+    "email": "carol@test.com",
+    "id": 3,
+    "name": "carol",
+    "status": 0,
+    "update_time": "Sun, 08 Nov 2026 15
+2026-11-08 15:25:53,251 - api_test - INFO - GET http://127.0.0.1:5000/api/users/99999
+2026-11-08 15:25:53,309 - api_test - INFO - Response 404: {
+  "code": 404,
+  "message": "user not found"
+}
+
+2026-11-08 15:25:53,467 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'email': 'no_name@test.com'}
+2026-11-08 15:25:53,469 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:25:53,617 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'no_email'}
+2026-11-08 15:25:53,619 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:25:53,786 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'dup', 'email': 'alice@test.com'}
+2026-11-08 15:25:53,857 - api_test - INFO - Response 409: {
+  "code": 409,
+  "msg": "\u90ae\u7bb1\u5df2\u88ab\u5360\u7528"
+}
+
+2026-11-08 15:25:54,029 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': '', 'email': 'empty@test.com'}
+2026-11-08 15:25:54,032 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
+2026-11-08 15:25:54,192 - api_test - INFO - POST http://127.0.0.1:5000/api/users body={'name': 'empty_email', 'email': ''}
+2026-11-08 15:25:54,195 - api_test - INFO - Response 400: {
+  "code": 400,
+  "msg": "name\u548cemail\u5fc5\u586b"
+}
+
