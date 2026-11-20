@@ -1,6 +1,7 @@
 import os
 import requests
 import allure
+import pytest
 from config.config import get_config
 
 BASE_URL = get_config('base_url')
@@ -37,6 +38,7 @@ class TestTokenAuth:
         assert resp.status_code == 401
 
     @allure.story("登录")
+    @pytest.mark.smoke
     def test_login_success(self):
         """正确登录，应返回 200 且带 token"""
         resp = requests.post(

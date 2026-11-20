@@ -1,40 +1,72 @@
 create_user_data:
   - case_name: "create_user_normal_enabled"
-    name: "dingyi"
-    email: "dingyi@test.com"
-    status: 1
+    payload:
+      name: "dingyi"
+      email: "dingyi@test.com"
+      status: 1
     expect_code: 201
 
   - case_name: "create_user_disabled"
-    name: "eva"
-    email: "eva@test.com"
-    status: 0
+    payload:
+      name: "eva"
+      email: "eva@test.com"
+      status: 0
     expect_code: 201
 
   - case_name: "create_user_long_name"
-    name: "test_user_with_a_very_long_name"
-    email: "long@test.com"
-    status: 1
+    payload:
+      name: "test_user_with_a_very_long_name"
+      email: "long@test.com"
+      status: 1
     expect_code: 201
 
   - case_name: "create_user_chinese_name"
-    name: "张三丰"
-    email: "zhangsf@test.com"
-    status: 1
+    payload:
+      name: "张三丰"
+      email: "zhangsf@test.com"
+      status: 1
     expect_code: 201
 
   - case_name: "create_user_minimal_fields"
-    name: "min"
-    email: "min@test.com"
-    status: 1
+    payload:
+      name: "min"
+      email: "min@test.com"
+      status: 1
     expect_code: 201
 
   - case_name: "create_user_no_status_default"
-    name: "nostatus"
-    email: "nostatus@test.com"
-    status: null
+    payload:
+      name: "nostatus"
+      email: "nostatus@test.com"
     expect_code: 201
 
+  - case_name: "create_user_email_with_plus"
+    payload:
+      name: "plususer"
+      email: "user+tag@test.com"
+      status: 1
+    expect_code: 201
+
+  - case_name: "create_user_chinese_name2"
+    payload:
+      name: "王小明"
+      email: "wangxm@test.com"
+      status: 1
+    expect_code: 201
+
+  - case_name: "create_user_name_with_number"
+    payload:
+      name: "user123"
+      email: "user123@test.com"
+      status: 1
+    expect_code: 201
+
+  - case_name: "create_user_name_50chars"
+    payload:
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      email: "fifty@test.com"
+      status: 1
+    expect_code: 201
 
 update_user_data:
   - case_name: "update_name_only"
@@ -63,6 +95,50 @@ update_user_data:
       name: "ghost"
     expect_code: 404
 
+  - case_name: "update_email_only"
+    need_setup: true
+    payload:
+      email: "updated_email@test.com"
+    expect_code: 200
+
+  - case_name: "update_all_fields"
+    need_setup: true
+    payload:
+      name: "all_fields"
+      email: "all_fields@test.com"
+      status: 0
+    expect_code: 200
+
+  - case_name: "update_duplicate_email"
+    need_setup: true
+    payload:
+      email: "alice@test.com"
+    expect_code: 409
+
+  - case_name: "update_name_empty"
+    need_setup: true
+    payload:
+      name: ""
+    expect_code: 400
+
+  - case_name: "update_name_too_long_51"
+    need_setup: true
+    payload:
+      name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expect_code: 400
+
+  - case_name: "update_email_invalid_format"
+    need_setup: true
+    payload:
+      email: "notanemail"
+    expect_code: 400
+
+  - case_name: "update_status_invalid"
+    need_setup: true
+    payload:
+      status: 3
+    expect_code: 400
+
 delete_user_data:
   - case_name: "delete_normal"
     need_setup: true
@@ -70,6 +146,10 @@ delete_user_data:
   - case_name: "delete_not_found"
     need_setup: false
     user_id: 99999
+    expect_code: 404
+  - case_name: "delete_user_id_zero"
+    need_setup: false
+    user_id: 0
     expect_code: 404
 
 get_user_data:
@@ -98,6 +178,24 @@ get_user_data:
     user_id: 99999
     expect_code: 404
 
+  - case_name: "get_user_id_zero"
+    user_id: 0
+    expect_code: 404
+
+  - case_name: "get_user_id_negative"
+    user_id: -1
+    expect_code: 404
+    # 负数id匹配不上 <int:uid> 路由，由 Flask 直接返回 HTML 404，没有 JSON 响应体
+    expect_json: false
+
+  - case_name: "get_user_id_100"
+    user_id: 100
+    expect_code: 404
+
+  - case_name: "get_user_id_200"
+    user_id: 200
+    expect_code: 404
+
 create_user_negative_data:
   - case_name: "missing_name"
     payload: {"email": "no_name@test.com"}
@@ -117,4 +215,36 @@ create_user_negative_data:
 
   - case_name: "empty_email"
     payload: { "name": "empty_email", "email": "" }
+    expect_code: 400
+
+  - case_name: "missing_both_fields"
+    payload: {}
+    expect_code: 400
+
+  - case_name: "name_is_null"
+    payload: {"name": null, "email": "null@test.com"}
+    expect_code: 400
+
+  - case_name: "email_is_null"
+    payload: {"name": "null_email", "email": null}
+    expect_code: 400
+
+  - case_name: "name_too_long_51"
+    payload: {"name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "email": "n51@test.com"}
+    expect_code: 400
+
+  - case_name: "email_too_long_101"
+    payload: {"name": "long_email", "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com"}
+    expect_code: 400
+
+  - case_name: "email_invalid_format"
+    payload: {"name": "bad_email", "email": "notanemail"}
+    expect_code: 400
+
+  - case_name: "status_invalid_abc"
+    payload: {"name": "bad_status", "email": "badstatus@test.com", "status": "abc"}
+    expect_code: 400
+
+  - case_name: "status_invalid_3"
+    payload: {"name": "bad_status3", "email": "badstatus3@test.com", "status": 3}
     expect_code: 400

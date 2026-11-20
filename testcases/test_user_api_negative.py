@@ -9,6 +9,7 @@ NEG_CASES, NEG_IDS = get_test_cases(YAML, "create_user_negative_data")
 
 
 @allure.feature("用户管理-异常场景")
+@pytest.mark.regression
 class TestUserApiNegative:
 
     @allure.story("创建用户-反向")
@@ -17,3 +18,4 @@ class TestUserApiNegative:
         allure.dynamic.title(case["case_name"])
         resp = api.post("/api/users", case["payload"])
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        AssertUtil.assert_json_value(resp, "code", case["expect_code"])

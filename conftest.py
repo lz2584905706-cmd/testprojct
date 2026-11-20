@@ -1,5 +1,3 @@
-import os
-os.environ["PYTEST_UTF8_IDS"] = "1"
 import pytest
 from common.api_client import ApiClient
 from common.db_client import DbClient

@@ -1,15 +1,17 @@
-CREATE DATABASE IF NOT EXISTS my_user_api DEFAULT CHARSET utf8b4;
+CREATE DATABASE IF NOT EXISTS my_user_api DEFAULT CHARSET=utf8mb4;
 
 USE my_user_api;
 
-CREATE TABLE t_user{
-     id          INT AUTO_INCREMENT PRIMARY KEY,
+DROP TABLE IF EXISTS t_user;
+
+CREATE TABLE t_user (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(50)  NOT NULL,
     email       VARCHAR(100) NOT NULL UNIQUE,
     status      TINYINT      DEFAULT 1,
     create_time DATETIME     DEFAULT CURRENT_TIMESTAMP,
     update_time DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-};
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO t_user (name,email,status) VALUES
 ('alice', 'alice@test.com', 1),

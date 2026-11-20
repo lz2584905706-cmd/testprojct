@@ -9,12 +9,14 @@ YAML = read_yaml(os.path.join(os.path.dirname(__file__), "..", "data", "user_dat
 @allure.feature("用户管理")
 class TestUserApi:
     @allure.story("查询用户列表")
+    @pytest.mark.smoke
     def test_get_users(self, api, db):
         resp = api.get("/api/users")
         body = resp.json()
 
         AssertUtil.assert_status_code(resp, 200)
         AssertUtil.assert_json_value(resp, "code", 0)
+        AssertUtil.assert_response_time(resp, max_seconds=0.5)
 
         db_rows = db.query_all("SELECT * FROM t_user")
         assert len(body["data"]) == len(db_rows)
@@ -25,22 +27,18 @@ class TestUserApi:
     @pytest.mark.parametrize("case", CREATE_CASES, ids=CREATE_IDS)
     def test_create_users_batch(self, api, db, case):
         allure.dynamic.title(case["case_name"])
-        body = {"name": case["name"], "email": case["email"]}
-        if case.get("status") is not None:
-            body["status"] = case["status"]
-        resp = api.post("/api/users", body)
+        payload = case["payload"]
+        resp = api.post("/api/users", payload)
         AssertUtil.assert_status_code(resp, case["expect_code"])
         AssertUtil.assert_json_value(resp, "code", 0)
+        AssertUtil.assert_response_time(resp, max_seconds=1.0)
 
-
-        row = db.query_one("SELECT * FROM t_user WHERE email=%s", (case["email"],))
+        row = db.query_one("SELECT * FROM t_user WHERE email=%s", (payload["email"],))
         assert row is not None
-        assert row["name"] == case["name"]
+        assert row["name"] == payload["name"]
 
-        if case["status"] is not None:
-            expected_status = case["status"]
-        else:
-            expected_status = 1
+        # status 未传时后端默认设置为 1
+        expected_status = payload.get("status") if payload.get("status") is not None else 1
         assert row["status"] == expected_status
 
     UPDATE_CASES, UPDATE_IDS = get_test_cases(YAML, "update_user_data")
@@ -56,14 +54,17 @@ class TestUserApi:
 
         resp = api.put(f"/api/users/{uid}", case["payload"])
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        AssertUtil.assert_response_time(resp, max_seconds=1.0)
+        expected_body_code = 0 if case["expect_code"] == 200 else case["expect_code"]
+        AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
             row = db.query_one("SELECT * FROM t_user WHERE id=%s", (uid,))
             for key, value in case["payload"].items():
                 assert row[key] == value
 
-    DELETE_CASES, DELETE_IDS = get_test_cases(YAML, "delete_user_data")
 
+    DELETE_CASES, DELETE_IDS = get_test_cases(YAML, "delete_user_data")
     @allure.story("删除用户-数据驱动")
     @pytest.mark.parametrize("case", DELETE_CASES, ids=DELETE_IDS)
     def test_delete_users_batch(self, api, db, create_user, case):
@@ -76,6 +77,9 @@ class TestUserApi:
 
         resp = api.delete(f"/api/users/{uid}")
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        AssertUtil.assert_response_time(resp, max_seconds=1.0)
+        expected_body_code = 0 if case["expect_code"] == 200 else case["expect_code"]
+        AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
             row = db.query_one("SELECT * FROM t_user WHERE id=%s", (uid,))
@@ -90,6 +94,10 @@ class TestUserApi:
 
         resp = api.get(f"/api/users/{case['user_id']}")
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        # expect_json=false 的用例由路由层返回 HTML，没有 JSON 响应体，跳过 code 断言
+        if case.get("expect_json", True):
+            expected_body_code = 0 if case["expect_code"] == 200 else case["expect_code"]
+            AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
             AssertUtil.assert_json_value(resp, "data.name", case["expect_name"])

@@ -1,3 +1,5 @@
+import os
+
 CONFIG = {
     "dev": {
         "base_url": "http://127.0.0.1:5000",
@@ -12,10 +14,11 @@ CONFIG = {
         }
     },
     "test": {
-        "base_url": "http://shturl.cc/Y3:5000",
+        # 格式必须是 scheme://host:port[/path]，端口要跟在 host 后面，不能写在路径后面
+        "base_url": "http://shturl.cc:5000/Y3",
         "timeout": 10,
         "db": {
-            "host": "shturl.cc/Y3",
+            "host": "shturl.cc",
             "port": 3306,
             "user": "root",
             "password": "123456",
@@ -25,7 +28,12 @@ CONFIG = {
     },
 }
 
-ENV = "dev"
+# 优先读取系统环境变量 TEST_ENV，未设置时默认使用 dev 环境
+ENV = os.getenv("TEST_ENV", "dev")
+
+# 防御性校验：如果传入了不支持的环境名称，主动报错并列出可用环境
+if ENV not in CONFIG:
+    raise ValueError(f"未知环境配置: [{ENV}]！目前支持的环境有: {list(CONFIG.keys())}")
 
 
 def get_config(key=None):
