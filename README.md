@@ -1,18 +1,21 @@
 # 用户管理接口自动化测试项目
 
+[![CI Pipeline](https://github.com/lz2584905706-cmd/testprojct/actions/workflows/test_pipeline.yml/badge.svg)](https://github.com/lz2584905706-cmd/testprojct/actions/workflows/test_pipeline.yml)
+
 基于 Flask + Pytest + Allure 搭建的接口自动化测试教学项目，覆盖用户管理模块的增删改查、反向场景与 Token 鉴权。
 
 ## 技术栈
 
 | 层级 | 技术 |
 |---|---|
-| 后端 | Flask + MySQL |
-| 测试框架 | Pytest |
-| 数据驱动 | YAML |
-| 报告 | Allure |
-| 日志 | logging（控制台 + 文件） |
-| HTTP 请求 | Requests |
-| 数据库连接 | PyMySQL |
+| 后端 | Flask + MySQL 8.0 |
+| 测试框架 | Pytest 9.2.0 |
+| 数据驱动 | YAML + Faker 动态造数引擎 |
+| 持续集成 | GitHub Actions CI/CD 流水线 |
+| 容器化 | Docker + Docker Compose 编排 |
+| 质量监控 | SLA 响应耗时监控 + Flaky 局部重试 |
+| 报告与日志 | Allure 2.16 + 日志记录（控制台/文件） |
+| 网络与数据库 | Requests + PyMySQL |
 
 ## 项目结构
 
@@ -51,7 +54,8 @@ xiangmu3/
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
-pip install -r requirements.txt
+# 测试开发全量依赖安装
+pip install -r requirements-dev.txt
 ```
 
 ## 启动后端
@@ -74,18 +78,18 @@ allure serve reports/allure
 
 ## 功能特性
 
-- **数据驱动**：测试数据与代码分离，YAML 维护，新增用例只需加数据
-- **双重断言**：既校验接口响应，又查数据库验证数据落库
-- **Fixtures 前后置**：每个用例前自动清表重置数据，用例间互不影响
-- **Token 鉴权**：自动登录获取 Token，后续请求自动携带
-- **多环境配置**：切换 dev/test 环境只需改一行配置
-- **日志记录**：请求/响应自动写入日志文件，方便排查
-- **Allure 报告**：按 feature/story 分层展示，失败用例自动附带响应详情
-- **Fiddler 代理**：DEBUG_PROXY 置 True 后，所有请求（含登录）统一走 127.0.0.1:8888，需先启动 Fiddler
+- **数据驱动**：测试数据与代码解耦，YAML 维护，支持 `${random_email()}` 等动态占位符
+- **动态造数引擎**：集成 Faker 并采用内存递归安全替换，彻底避免唯一键与并发数据冲突
+- **双重断言**：既校验接口响应状态码与业务 code，又查数据库验证数据物理落库
+- **数据回收站 (Teardown)**：引入 `cleaner` Fixture 精准回收测试临时脏数据，0 数据污染，环境高度幂等
+- **SLA 耗时监控**：核心正向接口内置响应耗时 SLA 断言，自动拦截慢接口
+- **分层测试**：打标 `smoke`、`regression`、`security`，支持秒级筛选冒烟测试
+- **CI/CD 持续集成**：GitHub Actions 云端自动化拉起 MySQL、执行健康检查轮询并产出 Allure 报告
+- **Docker 容器化**：提供精简 `Dockerfile` 与多容器编排 `docker-compose.yml`，规避宿主机端口冲突
 
 ## 测试覆盖
 
-共 50 条用例，单次全量执行约 16 秒，全部通过。
+共 51 条用例（含 1 条 Faker 动态造数用例），单次全量执行约 8~12 秒，全绿通过。
 
 | 模块 | 覆盖场景 |
 |---|---|

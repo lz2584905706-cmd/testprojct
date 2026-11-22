@@ -4,7 +4,10 @@ import pytest
 from common.yaml_util import read_yaml, get_test_cases
 from common.assert_util import AssertUtil
 
-YAML = read_yaml(os.path.join(os.path.dirname(__file__), "..", "data", "user_data.yaml"))
+YAML_PATH = os.path.join(
+    os.path.dirname(__file__), "..", "data", "user_data.yaml"
+)
+YAML = read_yaml(YAML_PATH)
 NEG_CASES, NEG_IDS = get_test_cases(YAML, "create_user_negative_data")
 
 

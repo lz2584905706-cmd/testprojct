@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 import pymysql
 from functools import wraps
@@ -26,9 +27,21 @@ def require_token(f):          # f 是被装饰的那个接口函数（比如 ge
     return decorated
 
 
+DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "123456")
+DB_NAME = os.getenv("DB_NAME", "my_user_api")
+
+
 def get_conn():
-    return pymysql.connect(host="127.0.0.1", user="root", password="123456",
-                           database="my_user_api", charset="utf8mb4", autocommit=True)
+    return pymysql.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DB_NAME,
+        charset="utf8mb4",
+        autocommit=True,
+    )
 
 
 def bad_request(msg):
@@ -176,4 +189,6 @@ def delete_user(uid):
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    # 安全规范：debug 模式由环境变量控制，默认 False，防止公网/容器环境下 Werkzeug 调试器被利用执行任意代码 (RCE)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() in ("true", "1")
+    app.run(host="0.0.0.0", port=5000, debug=debug_mode)

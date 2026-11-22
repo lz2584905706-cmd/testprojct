@@ -29,19 +29,30 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 安装项目依赖
+      - name: 安装测试与开发全量依赖
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
       - name: 初始化数据库
         run: |
           mysql -h 127.0.0.1 -u root -p123456 my_user_api < sql/init.sql
 
-      - name: 启动后端服务
+      - name: 启动后端服务并进行健康检查
         run: |
           python backend/app.py &
-          sleep 3
+          # 工业级健康检查：轮询接口是否就绪，最多等待 30 秒，彻底避免 sleep 3 网络抖动假死
+          for i in $(seq 1 30); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/api/users || true)
+            if [ "$STATUS" -eq 200 ] || [ "$STATUS" -eq 401 ]; then
+              echo "后端服务已成功就绪（HTTP $STATUS）！"
+              exit 0
+            fi
+            echo "等待后端服务就绪中... ($i/30)"
+            sleep 1
+          done
+          echo "后端服务启动超时失败！"
+          exit 1
 
       - name: 运行接口测试
         env:

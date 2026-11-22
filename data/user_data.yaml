@@ -68,6 +68,14 @@ create_user_data:
       status: 1
     expect_code: 201
 
+  - case_name: "create_user_dynamic_faker"
+    payload:
+      name: "${random_name()}"
+      email: "${random_email()}"
+      status: 1
+    expect_code: 201
+
+
 update_user_data:
   - case_name: "update_name_only"
     need_setup: true

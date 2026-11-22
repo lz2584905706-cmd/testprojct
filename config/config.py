@@ -14,15 +14,15 @@ CONFIG = {
         }
     },
     "test": {
-        # 格式必须是 scheme://host:port[/path]，端口要跟在 host 后面，不能写在路径后面
-        "base_url": "http://shturl.cc:5000/Y3",
+        # 测试环境（敏感信息从环境变量读取，防止密码与公网地址硬编码泄露）
+        "base_url": os.getenv("TEST_BASE_URL", "http://test-api.example.com:5000"),
         "timeout": 10,
         "db": {
-            "host": "shturl.cc",
-            "port": 3306,
-            "user": "root",
-            "password": "123456",
-            "database": "my_user_api",
+            "host": os.getenv("TEST_DB_HOST", "test-db.example.com"),
+            "port": int(os.getenv("TEST_DB_PORT", "3306")),
+            "user": os.getenv("TEST_DB_USER", "test_user"),
+            "password": os.getenv("TEST_DB_PASSWORD", "your_password"),
+            "database": os.getenv("TEST_DB_NAME", "my_user_api"),
             "charset": "utf8mb4",
         }
     },

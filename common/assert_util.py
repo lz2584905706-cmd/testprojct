@@ -1,7 +1,8 @@
-from common.logger import get_logger
 import allure
+from common.logger import get_logger
 
-logger =  get_logger()
+logger = get_logger()
+
 
 class AssertUtil:
     @staticmethod
@@ -14,12 +15,17 @@ class AssertUtil:
     @staticmethod
     def assert_status_code(resp, expect_code):
         try:
-            assert resp.status_code == expect_code,f"状态码校验失败！预期:{expect_code},实际:{resp.status_code}"
+            assert resp.status_code == expect_code, (
+                f"状态码校验失败！预期:{expect_code},实际:{resp.status_code}"
+            )
         except AssertionError as e:
             body = AssertUtil._safe_body(resp)
             logger.error(f"响应返回内容{body}")
-            allure.attach(f"状态码校验失败\n预期:{expect_code}\n实际:{resp.status_code}\n完整响应:{body}",
-                name="断言失败详情", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(
+                f"状态码校验失败\n预期:{expect_code}\n实际:{resp.status_code}\n完整响应:{body}",
+                name="断言失败详情",
+                attachment_type=allure.attachment_type.TEXT
+            )
             raise e
 
     @staticmethod
@@ -32,13 +38,17 @@ class AssertUtil:
                 actual = actual.get(k)
                 if actual is None:
                     break
-            assert actual == expect_value,f"字段{json_key}校验失败！预期:{expect_value},实际:{actual}"
+            assert actual == expect_value, (
+                f"字段{json_key}校验失败！预期:{expect_value},实际:{actual}"
+            )
         except AssertionError as e:
             body = AssertUtil._safe_body(resp)
             logger.error(f"响应返回内容{body}")
             allure.attach(
                 f"字段{json_key}校验失败\n预期:{expect_value}\n实际:{actual}\n完整响应:{body}",
-                name="断言失败详情", attachment_type=allure.attachment_type.TEXT)
+                name="断言失败详情",
+                attachment_type=allure.attachment_type.TEXT
+            )
             raise e
 
     @staticmethod
@@ -46,15 +56,18 @@ class AssertUtil:
         """断言接口响应耗时在预期阈值内（默认不超过 1 秒）"""
         try:
             elapsed = resp.elapsed.total_seconds()
-            assert elapsed <= max_seconds, f"接口响应超时！实际耗时:{elapsed:.3f}s, 预期阈值:{max_seconds}s"
+            assert elapsed <= max_seconds, (
+                f"接口响应超时！实际耗时:{elapsed:.3f}s, 预期阈值:{max_seconds}s"
+            )
         except AssertionError as e:
             body = AssertUtil._safe_body(resp)
-            logger.error(f"接口响应超时！URL:{resp.url}, 耗时:{elapsed:.3f}s, 阈值:{max_seconds}s")
+            logger.error(
+                f"接口响应超时！URL:{resp.url}, 耗时:{elapsed:.3f}s, 阈值:{max_seconds}s"
+            )
             allure.attach(
-                f"接口响应超时\nURL:{resp.url}\n实际耗时:{elapsed:.3f}s\n预期阈值:{max_seconds}s\n完整响应:{body}",
+                f"接口响应超时\nURL:{resp.url}\n实际耗时:{elapsed:.3f}s\n"
+                f"预期阈值:{max_seconds}s\n完整响应:{body}",
                 name="耗时SLA超标详情",
                 attachment_type=allure.attachment_type.TEXT,
             )
             raise e
-
-

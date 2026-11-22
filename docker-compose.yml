@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # ----------------- 1. MySQL 数据库服务 -----------------
+  db:
+    image: mysql:8.0
+    container_name: user_api_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "my_user_api"
+    ports:
+      # 映射到宿主机高位端口 13306，避免与本机已安装的物理 MySQL 3306 端口冲突
+      - "13306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # 核心机制：MySQL 容器初次启动时，自动执行 init.sql 建表并插入初始数据
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # ----------------- 2. Flask 被测后端服务 -----------------
+  web:
+    build: .
+    container_name: user_api_backend
+    restart: always
+    environment:
+      # 在 Docker 容器内部，数据库的主机名直接是上面的服务名 "db"
+      DB_HOST: "db"
+      DB_USER: "root"
+      DB_PASSWORD: "123456"
+      DB_NAME: "my_user_api"
+    ports:
+      # 映射到宿主机高位端口 15000，避免与本机已在运行的 Flask 5000 端口冲突
+      - "15000:5000"
+    depends_on:
+      - db
+
+# 数据持久化卷：即使容器被销毁重建，数据依然保存在硬盘上
+volumes:
+  mysql_data:

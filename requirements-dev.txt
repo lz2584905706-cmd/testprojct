@@ -1,0 +1,7 @@
+# 测试与开发环境全量依赖（继承基础运行依赖 + 测试工具链）
+-r requirements.txt
+requests==2.34.2
+pytest==9.2.0
+allure-pytest==2.16.2
+pytest-rerunfailures==16.7
+faker==40.63.0

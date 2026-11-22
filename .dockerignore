@@ -1,0 +1,18 @@
+# 忽略虚拟环境与测试缓存（防止几万个无用碎文件传入 Docker 构建上下文）
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 忽略测试产物与报告
+reports/
+logs/
+.pytest_cache/
+.allure_results/
+
+# 忽略版本控制与编辑器配置
+.git/
+.gitignore
+.idea/
+.vscode/
