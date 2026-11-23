@@ -8,6 +8,7 @@ TIMEOUT = get_config('timeout')
 
 
 @allure.feature("用户管理-鉴权")
+@pytest.mark.security
 class TestTokenAuth:
 
     @allure.story("未登录访问")

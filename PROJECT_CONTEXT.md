@@ -16,7 +16,7 @@
 - `conftest.py`：全局与用例级 Fixture 治理（Session 级基线初始化、`cleaner` 回收站 Teardown 机制）
 - `config/config.py`：多环境配置中心（支持 `TEST_ENV` 动态切换，敏感配置解耦）
 
-## 3. 测试用例统计（共 51 条）
+## 3. 测试用例统计（共 52 条）
 - **正向业务用例（34 条）**：
   - 用户查询列表、用户详情查询
   - 批量创建用户（11 条，含 1 条 Faker 动态造数用例）
@@ -24,9 +24,11 @@
   - 批量删除用户（3 条）
 - **反向异常用例（13 条）**：
   - 缺必填字段、空值、超长边界、非法邮箱格式、重复邮箱拦截
+- **高并发与幂等测试用例（1 条）**：
+  - 10 线程并发创建同邮箱用户：严苛验证 1 个成功(201)、9 个拦截(409)、0 崩溃(500)、物理表仅落库 1 条
 - **鉴权安全用例（4 条）**：
   - 无 Token 拦截(401)、错误 Token 拦截(401)、密码错误(401)、正常登录(200)
 
 ## 4. 持续集成与交付
-- **CI/CD**：`.github/workflows/test_pipeline.yml`（GitHub Actions 自动化拉起 MySQL、依赖安装、健康检查轮询、全量测试执行与 Allure 报告生成）
+- **CI/CD**：`.github/workflows/test_pipeline.yml`（GitHub Actions 矩阵多版本构建 Python 3.11/3.12/3.13 并行测试、MySQL 服务编排、健康检查轮询、Allure 命令行独立单文件 HTML 可视化报告编译与产物上传）
 - **Docker 编排**：`Dockerfile`（纯后端精简镜像）+ `docker-compose.yml`（MySQL 8.0 映射 13306、Flask 映射 15000）

@@ -1,4 +1,6 @@
 import allure
+import jsonschema
+from jsonschema.exceptions import ValidationError
 from common.logger import get_logger
 
 logger = get_logger()
@@ -71,3 +73,24 @@ class AssertUtil:
                 attachment_type=allure.attachment_type.TEXT,
             )
             raise e
+
+    @staticmethod
+    def assert_schema(resp, schema):
+        """校验接口响应体是否严格符合 JsonSchema 契约规范"""
+        try:
+            body = resp.json()
+            jsonschema.validate(instance=body, schema=schema)
+        except ValidationError as e:
+            body = AssertUtil._safe_body(resp)
+            path_str = " -> ".join([str(p) for p in e.path]) if e.path else "root"
+            err_msg = f"违约路径: [{path_str}], 错误详情: {e.message}"
+            logger.error(f"接口契约破坏！{err_msg}")
+            allure.attach(
+                f"接口契约校验失败 (JsonSchema)\n"
+                f"违约字段路径: {path_str}\n"
+                f"违约规则详情: {e.message}\n"
+                f"完整响应内容:\n{body}",
+                name="契约校验失败详情",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+            raise AssertionError(f"接口契约破坏！{err_msg}")

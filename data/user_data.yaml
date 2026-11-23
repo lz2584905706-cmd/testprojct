@@ -106,14 +106,14 @@ update_user_data:
   - case_name: "update_email_only"
     need_setup: true
     payload:
-      email: "updated_email@test.com"
+      email: "${random_email()}"
     expect_code: 200
 
   - case_name: "update_all_fields"
     need_setup: true
     payload:
-      name: "all_fields"
-      email: "all_fields@test.com"
+      name: "${random_name()}"
+      email: "${random_email()}"
       status: 0
     expect_code: 200
 
@@ -206,11 +206,11 @@ get_user_data:
 
 create_user_negative_data:
   - case_name: "missing_name"
-    payload: {"email": "no_name@test.com"}
+    payload: {"email": "${random_email()}"}
     expect_code: 400
 
   - case_name: "missing_email"
-    payload: {"name": "no_email"}
+    payload: {"name": "${random_name()}"}
     expect_code: 400
 
   - case_name: "duplicate_email"
@@ -218,11 +218,11 @@ create_user_negative_data:
     expect_code: 409
 
   - case_name: "empty_name"
-    payload: { "name": "", "email": "empty@test.com" }
+    payload: { "name": "", "email": "${random_email()}" }
     expect_code: 400
 
   - case_name: "empty_email"
-    payload: { "name": "empty_email", "email": "" }
+    payload: { "name": "${random_name()}", "email": "" }
     expect_code: 400
 
   - case_name: "missing_both_fields"
@@ -230,29 +230,29 @@ create_user_negative_data:
     expect_code: 400
 
   - case_name: "name_is_null"
-    payload: {"name": null, "email": "null@test.com"}
+    payload: {"name": null, "email": "${random_email()}"}
     expect_code: 400
 
   - case_name: "email_is_null"
-    payload: {"name": "null_email", "email": null}
+    payload: {"name": "${random_name()}", "email": null}
     expect_code: 400
 
   - case_name: "name_too_long_51"
-    payload: {"name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "email": "n51@test.com"}
+    payload: {"name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "email": "${random_email()}"}
     expect_code: 400
 
   - case_name: "email_too_long_101"
-    payload: {"name": "long_email", "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com"}
+    payload: {"name": "${random_name()}", "email": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@test.com"}
     expect_code: 400
 
   - case_name: "email_invalid_format"
-    payload: {"name": "bad_email", "email": "notanemail"}
+    payload: {"name": "${random_name()}", "email": "notanemail"}
     expect_code: 400
 
   - case_name: "status_invalid_abc"
-    payload: {"name": "bad_status", "email": "badstatus@test.com", "status": "abc"}
+    payload: {"name": "${random_name()}", "email": "${random_email()}", "status": "abc"}
     expect_code: 400
 
   - case_name: "status_invalid_3"
-    payload: {"name": "bad_status3", "email": "badstatus3@test.com", "status": 3}
+    payload: {"name": "${random_name()}", "email": "${random_email()}", "status": 3}
     expect_code: 400

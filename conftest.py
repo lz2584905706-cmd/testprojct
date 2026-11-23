@@ -1,6 +1,7 @@
 import pytest
 from common.api_client import ApiClient
 from common.db_client import DbClient
+from common.data_faker import random_name, random_email
 
 
 @pytest.fixture(scope='session')
@@ -63,10 +64,12 @@ def db():
 
 @pytest.fixture
 def create_user(api, cleaner):
-    def _create_user(name="test_user", email="test@test.com", status=1):
+    def _create_user(name=None, email=None, status=1):
+        actual_name = name or random_name()
+        actual_email = email or random_email()
         resp = api.post(
             "/api/users",
-            {"name": name, "email": email, "status": status}
+            {"name": actual_name, "email": actual_email, "status": status}
         )
         uid = resp.json()["data"]["id"]
         # 自动登记到清理回收站，用例结束后精准删除该临时用户

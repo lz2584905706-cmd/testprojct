@@ -3,6 +3,7 @@ import allure
 import pytest
 from common.yaml_util import read_yaml, get_test_cases
 from common.assert_util import AssertUtil
+from common.schemas import USER_DETAIL_SCHEMA, USER_LIST_SCHEMA
 
 YAML_PATH = os.path.join(
     os.path.dirname(__file__), "..", "data", "user_data.yaml"
@@ -11,6 +12,7 @@ YAML = read_yaml(YAML_PATH)
 
 
 @allure.feature("用户管理")
+@pytest.mark.regression
 class TestUserApi:
     @allure.story("查询用户列表")
     @pytest.mark.smoke
@@ -23,6 +25,8 @@ class TestUserApi:
         AssertUtil.assert_status_code(resp, 200)
         AssertUtil.assert_json_value(resp, "code", 0)
         AssertUtil.assert_response_time(resp, max_seconds=0.5)
+        # 契约断言：全量校验用户列表响应体结构契约（必填字段与类型格式）
+        AssertUtil.assert_schema(resp, USER_LIST_SCHEMA)
 
         db_rows = db.query_all("SELECT * FROM t_user")
         assert len(body["data"]) == len(db_rows)
@@ -63,11 +67,7 @@ class TestUserApi:
         allure.dynamic.title(case["case_name"])
 
         if case["need_setup"]:
-            uid = create_user(
-                name="tmp",
-                email=f"tmp_{case['case_name']}@test.com",
-                status=1
-            )
+            uid = create_user()
         else:
             uid = case["user_id"]
 
@@ -92,11 +92,7 @@ class TestUserApi:
         allure.dynamic.title(case["case_name"])
 
         if case["need_setup"]:
-            uid = create_user(
-                name="tmp",
-                email=f"tmp_{case['case_name']}@test.com",
-                status=1
-            )
+            uid = create_user()
         else:
             uid = case["user_id"]
 
@@ -129,6 +125,8 @@ class TestUserApi:
             AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
+            # 契约断言：全量校验用户详情响应体结构契约（id/name/email/status类型强校验）
+            AssertUtil.assert_schema(resp, USER_DETAIL_SCHEMA)
             AssertUtil.assert_json_value(resp, "data.name", case["expect_name"])
             AssertUtil.assert_json_value(resp, "data.email", case["expect_email"])
             AssertUtil.assert_json_value(resp, "data.status", case["expect_status"])
