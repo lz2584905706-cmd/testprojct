@@ -3,7 +3,14 @@ import allure
 import pytest
 from common.yaml_util import read_yaml, get_test_cases
 from common.assert_util import AssertUtil
-from common.schemas import USER_DETAIL_SCHEMA, USER_LIST_SCHEMA
+from common.schemas import (
+    USER_DETAIL_SCHEMA,
+    USER_LIST_SCHEMA,
+    USER_CREATE_SCHEMA,
+    USER_UPDATE_SCHEMA,
+    USER_DELETE_SCHEMA,
+    ERROR_RESPONSE_SCHEMA
+)
 
 YAML_PATH = os.path.join(
     os.path.dirname(__file__), "..", "data", "user_data.yaml"
@@ -42,6 +49,8 @@ class TestUserApi:
         AssertUtil.assert_status_code(resp, case["expect_code"])
         AssertUtil.assert_json_value(resp, "code", 0)
         AssertUtil.assert_response_time(resp, max_seconds=1.0)
+        if case["expect_code"] == 201:
+            AssertUtil.assert_schema(resp, USER_CREATE_SCHEMA)
 
         # 注册自动清理：无论后续断言是否通过，用例结束后精准删除本次创建的用户
         cleaner.register("t_user", email=payload["email"])
@@ -80,6 +89,7 @@ class TestUserApi:
         AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
+            AssertUtil.assert_schema(resp, USER_UPDATE_SCHEMA)
             row = db.query_one("SELECT * FROM t_user WHERE id=%s", (uid,))
             for key, value in case["payload"].items():
                 assert row[key] == value
@@ -105,8 +115,9 @@ class TestUserApi:
         AssertUtil.assert_json_value(resp, "code", expected_body_code)
 
         if case["expect_code"] == 200:
-            row = db.query_one("SELECT * FROM t_user WHERE id=%s", (uid,))
-            assert row is None
+            AssertUtil.assert_schema(resp, USER_DELETE_SCHEMA)
+            # 激活 DbClient.exists 封装方法进行真实数据库断言，杜绝死代码
+            assert not db.exists("t_user", id=uid), f"用户未被物理删除，仍存在于数据库中: id={uid}"
 
     GET_CASES, GET_IDS = get_test_cases(YAML, "get_user_data")
 
@@ -117,6 +128,7 @@ class TestUserApi:
 
         resp = api.get(f"/api/users/{case['user_id']}")
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        AssertUtil.assert_response_time(resp, max_seconds=1.0)
         # expect_json=false 的用例由路由层返回 HTML，没有 JSON 响应体，跳过 code 断言
         if case.get("expect_json", True):
             expected_body_code = (
@@ -130,3 +142,6 @@ class TestUserApi:
             AssertUtil.assert_json_value(resp, "data.name", case["expect_name"])
             AssertUtil.assert_json_value(resp, "data.email", case["expect_email"])
             AssertUtil.assert_json_value(resp, "data.status", case["expect_status"])
+        elif case.get("expect_json", True):
+            # 错误契约断言：404 等业务错误必须符合全局统一异常响应结构
+            AssertUtil.assert_schema(resp, ERROR_RESPONSE_SCHEMA)

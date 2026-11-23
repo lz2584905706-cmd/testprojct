@@ -3,6 +3,7 @@ import allure
 import pytest
 from common.yaml_util import read_yaml, get_test_cases
 from common.assert_util import AssertUtil
+from common.schemas import ERROR_RESPONSE_SCHEMA
 
 YAML_PATH = os.path.join(
     os.path.dirname(__file__), "..", "data", "user_data.yaml"
@@ -21,4 +22,6 @@ class TestUserApiNegative:
         allure.dynamic.title(case["case_name"])
         resp = api.post("/api/users", case["payload"])
         AssertUtil.assert_status_code(resp, case["expect_code"])
+        AssertUtil.assert_response_time(resp, max_seconds=1.0)
         AssertUtil.assert_json_value(resp, "code", case["expect_code"])
+        AssertUtil.assert_schema(resp, ERROR_RESPONSE_SCHEMA)

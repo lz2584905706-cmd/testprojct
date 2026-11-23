@@ -20,7 +20,7 @@ def random_email():
 
 
 def random_phone():
-    """生成 11 位符合规则的中国大陆手机号"""
+    """生成 11 位符合规则的中国大陆手机号（为未来用户模块扩展手机号登录/绑定预留）"""
     return fake.phone_number()
 
 

@@ -4,11 +4,6 @@ from common.db_client import DbClient
 from common.data_faker import random_name, random_email
 
 
-@pytest.fixture(scope='session')
-def store():
-    return {}
-
-
 INIT_SQL = [
     "TRUNCATE TABLE t_user",
     "INSERT INTO t_user (name, email, status) VALUES "
