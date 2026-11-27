@@ -6,4 +6,5 @@ allure-pytest==2.16.2
 pytest-rerunfailures==16.7
 faker==40.63.0
 jsonschema==4.26.0
+locust==2.47.0
 
