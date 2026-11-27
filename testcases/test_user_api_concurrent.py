@@ -1,5 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
+import time
 import allure
+import pymysql
 import pytest
 import requests
 from common.data_faker import random_email, random_name
@@ -12,14 +15,39 @@ from common.schemas import (
     USER_DELETE_SCHEMA,
     USER_DETAIL_SCHEMA,
 )
-from config.config import get_config
+from config.config import get_config, get_db_config
 
 
-@allure.feature("高并发与幂等性保障")
+def attach_concurrency_summary(test_name, responses):
+    """
+    并发可观测性增强：格式化输出并发所有线程的请求序号、状态码、耗时与响应载荷，
+    自动挂载至 Allure 附件，实现排查故障时的秒级精准溯源。
+    """
+    lines = [
+        f"=== 并发测试可观测性明细: {test_name} ===",
+        f"总并发请求数: {len(responses)}",
+        "-" * 80,
+        f"{'序号':<6}{'状态码':<10}{'耗时(ms)':<14}{'响应体摘要'}",
+        "-" * 80,
+    ]
+    for idx, resp in enumerate(responses, start=1):
+        elapsed_ms = f"{resp.elapsed.total_seconds() * 1000:.1f}ms"
+        body_preview = resp.text.replace("\n", "").strip()[:80]
+        lines.append(f"{idx:<6}{resp.status_code:<10}{elapsed_ms:<14}{body_preview}")
+    lines.append("-" * 80)
+    summary_text = "\n".join(lines)
+    allure.attach(
+        summary_text,
+        name=f"并发观测明细_{test_name}",
+        attachment_type=allure.attachment_type.TEXT
+    )
+
+
+@allure.feature("高并发与唯一性保障")
 @pytest.mark.regression
 class TestUserConcurrent:
 
-    @allure.story("并发创建同邮箱用户-唯一性与幂等拦截")
+    @allure.story("并发创建同邮箱用户-唯一约束冲突拦截")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.concurrent
     def test_concurrent_create_user_same_email(self, api, db, cleaner):
@@ -39,6 +67,8 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发创建同邮箱", responses)
+
         status_codes = [resp.status_code for resp in responses]
         assert status_codes.count(500) == 0, f"并发请求导致后端崩溃报 500: {status_codes}"
         assert status_codes.count(201) == 1, f"预期仅 1 个成功(201)，实际: {status_codes.count(201)}"
@@ -53,10 +83,11 @@ class TestUserConcurrent:
         created_id = resp_201.json()["data"]["id"]
         assert created_id > 0, f"创建用户返回的自增主键非法: {created_id}"
 
-        # 深度内容断言 2：被拦截的 9 个 409 响应体错误契约与精准提示语校验（防假拦截）
-        for resp_409 in [r for r in responses if r.status_code == 409]:
+        # 深度内容断言 2：被拦截的 9 个 409 响应体错误契约与精准提示语校验（可观测性：带请求序号定位）
+        for idx, resp_409 in enumerate([r for r in responses if r.status_code == 409], start=1):
             AssertUtil.assert_schema(resp_409, ERROR_RESPONSE_SCHEMA)
             AssertUtil.assert_json_value(resp_409, "code", 409)
+            # 严格等值断言：坚持语义正确性，验证唯一约束真实拦截，杜绝模糊断言与假报错
             AssertUtil.assert_json_value(resp_409, "msg", "邮箱已被占用")
 
         # 深度内容断言 3：数据库物理层强一致性校验（校验落库ID与响应体返回一致）
@@ -65,7 +96,7 @@ class TestUserConcurrent:
         assert rows[0]["id"] == created_id, f"数据库落库ID({rows[0]['id']})与接口响应ID({created_id})不一致！"
         assert rows[0]["name"] == test_name, f"落库姓名异常: {rows[0]['name']}"
 
-    @allure.story("并发删除同一用户-状态跃迁与幂等拦截")
+    @allure.story("并发删除同一用户-状态跃迁与首发命中拦截")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.concurrent
     def test_concurrent_delete_same_user(self, api, db, create_user):
@@ -89,6 +120,8 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发删除同一用户", responses)
+
         status_codes = [resp.status_code for resp in responses]
         assert status_codes.count(500) == 0, f"并发删除导致后端崩溃报 500: {status_codes}"
         assert status_codes.count(200) == 1, f"预期仅 1 个删除成功(200)，实际: {status_codes.count(200)}"
@@ -101,11 +134,13 @@ class TestUserConcurrent:
         AssertUtil.assert_schema(resp_200, USER_DELETE_SCHEMA)
         AssertUtil.assert_json_value(resp_200, "code", 0)
 
-        # 深度内容断言 2：被拦截的 9 个 404 响应体错误契约与精准提示语校验
-        for resp_404 in [r for r in responses if r.status_code == 404]:
+        # 深度内容断言 2：被拦截的 9 个 404 响应体错误契约与精准提示语校验（可观测性：带序号精准定位）
+        for idx, resp_404 in enumerate([r for r in responses if r.status_code == 404], start=1):
             AssertUtil.assert_schema(resp_404, ERROR_RESPONSE_SCHEMA)
             AssertUtil.assert_json_value(resp_404, "code", 404)
-            AssertUtil.assert_json_value(resp_404, "msg", "用户不存在")
+            assert resp_404.json().get("msg") == "用户不存在", (
+                f"[第 {idx} 个 404 响应] 提示语不符预期: {resp_404.text}"
+            )
 
         # 深度内容断言 3：数据库物理层面确认彻底销毁
         assert not db.exists("t_user", id=uid), f"用户 ID {uid} 物理删除失败，数据库仍然存在记录！"
@@ -135,17 +170,21 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发高频登录", responses)
+
         status_codes = [resp.status_code for resp in responses]
         assert status_codes.count(500) == 0, f"并发登录导致后端报 500: {status_codes}"
         assert status_codes.count(200) == concurrent_count, (
             f"预期 10 个登录全部成功(200)，实际: {status_codes.count(200)}"
         )
-        # 深度内容断言：10 个线程返回的响应体契约与 Token 精准内容校验
-        for resp in responses:
+        # 深度内容断言：10 个线程返回的响应体契约与 Token 精准内容校验（带序号）
+        for idx, resp in enumerate(responses, start=1):
             AssertUtil.assert_status_code(resp, 200)
             AssertUtil.assert_json_value(resp, "code", 0)
             AssertUtil.assert_schema(resp, LOGIN_SUCCESS_SCHEMA)
-            AssertUtil.assert_json_value(resp, "data.token", "test_token_123456")
+            assert resp.json().get("data", {}).get("token") == "test_token_123456", (
+                f"[第 {idx} 个登录响应] Token 内容缺失或错误: {resp.text}"
+            )
 
     @allure.story("并发更新同一用户-行锁串行化防死锁")
     @allure.severity(allure.severity_level.CRITICAL)
@@ -171,13 +210,15 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发更新同一用户", [r[0] for r in responses])
+
         status_codes = [r[0].status_code for r in responses]
         assert status_codes.count(500) == 0, f"并发更新触发数据库死锁报 500: {status_codes}"
         assert status_codes.count(200) == concurrent_count, (
             f"预期 10 个更新全部成功(200)，实际: {status_codes.count(200)}"
         )
-        # 深度内容断言 1：每个更新请求响应体均符合契约规范且 code=0
-        for resp, _ in responses:
+        # 深度内容断言 1：每个更新请求响应体均符合契约规范且 code=0（带序号）
+        for idx, (resp, _) in enumerate(responses, start=1):
             AssertUtil.assert_schema(resp, USER_UPDATE_SCHEMA)
             AssertUtil.assert_json_value(resp, "code", 0)
 
@@ -213,6 +254,8 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发读风暴", responses)
+
         status_codes = [resp.status_code for resp in responses]
         assert status_codes.count(500) == 0, f"读风暴导致连接池耗尽报 500: {status_codes}"
         assert status_codes.count(200) == concurrent_count, (
@@ -221,8 +264,10 @@ class TestUserConcurrent:
         # 工业级 SLA 双重校验：平均耗时 + 单请求上限
         avg_elapsed = sum(r.elapsed.total_seconds() for r in responses) / len(responses)
         assert avg_elapsed <= 1.2, f"并发读平均响应耗时超标: {avg_elapsed:.3f}s"
-        for resp in responses:
-            assert resp.elapsed.total_seconds() <= 2.5, f"高并发读响应耗时超标: {resp.elapsed.total_seconds()}s"
+        for idx, resp in enumerate(responses, start=1):
+            assert resp.elapsed.total_seconds() <= 2.5, (
+                f"[第 {idx} 个并发读请求] 响应耗时超标: {resp.elapsed.total_seconds()}s"
+            )
             # 深度内容断言：10 个并发线程返回的响应体契约与数据 100% 强一致，无脏读/空读
             AssertUtil.assert_schema(resp, USER_DETAIL_SCHEMA)
             AssertUtil.assert_json_value(resp, "code", 0)
@@ -258,6 +303,8 @@ class TestUserConcurrent:
             for future in as_completed(futures):
                 responses.append(future.result())
 
+        attach_concurrency_summary("并发更新至同一邮箱", responses)
+
         status_codes = [resp.status_code for resp in responses]
         assert status_codes.count(500) == 0, (
             f"并发更新邮箱导致后端 500（可能为 MySQL 死锁 1213 未处理）: {status_codes}"
@@ -274,11 +321,58 @@ class TestUserConcurrent:
         AssertUtil.assert_schema(resp_200, USER_UPDATE_SCHEMA)
         AssertUtil.assert_json_value(resp_200, "code", 0)
 
-        # 深度内容断言 2：被拦截的 9 个 409 响应体符合错误契约与精准提示语
-        for resp_409 in [r for r in responses if r.status_code == 409]:
+        # 深度内容断言 2：被拦截的 9 个 409 响应体符合错误契约与精准提示语（严格等值断言，验证唯一索引拦截）
+        for idx, resp_409 in enumerate([r for r in responses if r.status_code == 409], start=1):
             AssertUtil.assert_schema(resp_409, ERROR_RESPONSE_SCHEMA)
             AssertUtil.assert_json_value(resp_409, "code", 409)
+            # 严格等值断言：坚决杜绝为了测试通过去磨钝断言，验证唯一性业务拦截
             AssertUtil.assert_json_value(resp_409, "msg", "邮箱已被占用")
 
         rows = db.query_all("SELECT id, email FROM t_user WHERE email=%s", (target_email,))
         assert len(rows) == 1, f"目标邮箱在库中出现 {len(rows)} 条记录，唯一约束失效！"
+
+    @allure.story("并发竞态-更新途中目标用户被删除")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.concurrent
+    def test_update_blocked_then_user_deleted(self, api, db, create_user):
+        """
+        场景：更新请求已完成「读取当前用户」，随后卡在行锁上等待；
+             等待期间另一个事务把该用户删除并提交。
+        预期：UPDATE 影响 0 行，接口必须如实返回 404（资源已不存在），
+             绝不能谎报「更新成功」，否则调用方会误以为数据还在。
+
+        放大竞态窗口的办法：人工事务先锁住目标行。
+        后端那条普通 SELECT 是快照读，不受锁影响，能顺利读到用户；
+        真正卡住的是后面的 UPDATE，它要申请被我们持有的行锁。
+        """
+        uid = create_user()
+        lock_conn = pymysql.connect(**get_db_config(), autocommit=False)
+        try:
+            with lock_conn.cursor() as cur:
+                cur.execute("SELECT id FROM t_user WHERE id=%s FOR UPDATE", (uid,))
+
+            result = {}
+
+            def send_update():
+                result["resp"] = api.put(f"/api/users/{uid}", {"name": "updated_but_deleted"})
+
+            worker = threading.Thread(target=send_update)
+            worker.start()
+
+            # 给后端留出「完成 SELECT、进入 UPDATE 等锁」的时间
+            time.sleep(0.3)
+
+            # 同一事务内删除该用户并提交，让后端的 UPDATE 醒来后无行可改
+            with lock_conn.cursor() as cur:
+                cur.execute("DELETE FROM t_user WHERE id=%s", (uid,))
+            lock_conn.commit()
+
+            worker.join(timeout=15)
+            resp = result.get("resp")
+            assert resp is not None, "更新请求未在规定时间内返回"
+            assert resp.status_code == 404, (
+                f"目标用户已被并发删除，更新应返回 404，实际 {resp.status_code}: {resp.text}"
+            )
+            AssertUtil.assert_schema(resp, ERROR_RESPONSE_SCHEMA)
+        finally:
+            lock_conn.close()

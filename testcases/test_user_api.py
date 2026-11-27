@@ -93,6 +93,30 @@ class TestUserApi:
             row = db.query_one("SELECT * FROM t_user WHERE id=%s", (uid,))
             for key, value in case["payload"].items():
                 assert row[key] == value
+        else:
+            # 异常契约断言：400/404/409 等更新错误必须严格符合全局错误响应契约
+            AssertUtil.assert_schema(resp, ERROR_RESPONSE_SCHEMA)
+
+    @allure.story("更新接口幂等性保障")
+    @pytest.mark.smoke
+    def test_put_user_idempotence(self, api, db, create_user):
+
+        uid = create_user()
+        update_payload = {"name": "idempotent_test_user", "status": 1}
+
+        # 连续发送 3 次相同的更新请求
+        for call_idx in range(1, 4):
+            resp = api.put(f"/api/users/{uid}", update_payload)
+            AssertUtil.assert_status_code(resp, 200)
+            AssertUtil.assert_response_time(resp, max_seconds=1.0)
+            AssertUtil.assert_json_value(resp, "code", 0)
+            AssertUtil.assert_schema(resp, USER_UPDATE_SCHEMA)
+
+        # 验证数据库最终数据一致性（无副作用产生）
+        row = db.query_one("SELECT name, status FROM t_user WHERE id=%s", (uid,))
+        assert row is not None
+        assert row["name"] == update_payload["name"]
+        assert row["status"] == update_payload["status"]
 
     DELETE_CASES, DELETE_IDS = get_test_cases(YAML, "delete_user_data")
 
@@ -118,6 +142,9 @@ class TestUserApi:
             AssertUtil.assert_schema(resp, USER_DELETE_SCHEMA)
             # 激活 DbClient.exists 封装方法进行真实数据库断言，杜绝死代码
             assert not db.exists("t_user", id=uid), f"用户未被物理删除，仍存在于数据库中: id={uid}"
+        else:
+            # 异常契约断言：404 等删除错误必须严格符合全局错误响应契约
+            AssertUtil.assert_schema(resp, ERROR_RESPONSE_SCHEMA)
 
     GET_CASES, GET_IDS = get_test_cases(YAML, "get_user_data")
 

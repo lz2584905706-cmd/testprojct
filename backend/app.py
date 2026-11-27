@@ -1,4 +1,5 @@
 import os
+import time
 from flask import Flask, jsonify, request
 import pymysql
 from functools import wraps
@@ -114,15 +115,28 @@ def create_user():
     conn = get_conn()
     try:
         cur = conn.cursor()
-        try:
-            cur.execute("INSERT INTO t_user (name, email, status) VALUES (%s,%s,%s)",
-                        (name, email, status))
-            new_id = cur.lastrowid
-            return jsonify({"code": 0, "data": {"id": new_id}, "msg": "创建成功"}), 201
-        except pymysql.err.IntegrityError as e:
-            if e.args[0] == 1062:
-                return jsonify({"code": 409, "msg": "邮箱已被占用"}), 409
-            return jsonify({"code": 500, "msg": "数据库错误"}), 500
+        for attempt in range(2):
+            try:
+                cur.execute(
+                    "INSERT INTO t_user (name, email, status) VALUES (%s,%s,%s)",
+                    (name, email, status)
+                )
+                new_id = cur.lastrowid
+                return jsonify({"code": 0, "data": {"id": new_id}, "msg": "创建成功"}), 201
+            except pymysql.err.IntegrityError as e:
+                # 邮箱重复违背唯一键约束，返回标准 409 Conflict
+                if e.args[0] == 1062:
+                    return jsonify({"code": 409, "msg": "邮箱已被占用"}), 409
+                return jsonify({"code": 500, "msg": "数据库错误"}), 500
+            except pymysql.err.OperationalError as e:
+                # 遇到死锁(1213)或锁超时(1205)，自动内部重试 1 次（自愈机制）
+                if e.args[0] in (1213, 1205) and attempt == 0:
+                    time.sleep(0.05)
+                    continue
+                # 若重试仍冲突，按照 RFC 规范返回 503 Service Unavailable 伴随 Retry-After 头
+                if e.args[0] in (1213, 1205):
+                    return jsonify({"code": 503, "msg": "服务暂忙，请稍后重试"}), 503, {"Retry-After": "1"}
+                return jsonify({"code": 500, "msg": "数据库操作异常"}), 500
     finally:
         conn.close()
 
@@ -159,14 +173,34 @@ def update_user(uid):
         if "status" in body and new_status not in (0, 1):
             return bad_request("status只能是0或1")
 
-        try:
-            cur.execute("UPDATE t_user SET name=%s, email=%s, status=%s WHERE id=%s",
-                        (new_name, new_email, new_status, uid))
-        except pymysql.err.IntegrityError as e:
-            # 改成已存在的邮箱：语义上是资源冲突，应该返回 409 而不是 500
-            if e.args[0] == 1062:
-                return jsonify({"code": 409, "msg": "邮箱已被占用"}), 409
-            return jsonify({"code": 500, "msg": "数据库错误"}), 500
+        for attempt in range(2):
+            try:
+                cur.execute(
+                    "UPDATE t_user SET name=%s, email=%s, status=%s WHERE id=%s",
+                    (new_name, new_email, new_status, uid)
+                )
+                # rowcount=0 有两种可能：①传的值与原值相同（幂等重复 PUT，应正常 200）
+                # ②该行已在 SELECT 与 UPDATE 之间被其它事务删除（必须 404）。
+                # 两者无法只凭 rowcount 区分，所以再确认一次行是否仍在。
+                if cur.rowcount == 0:
+                    cur.execute("SELECT 1 FROM t_user WHERE id=%s", (uid,))
+                    if cur.fetchone() is None:
+                        return jsonify({"code": 404, "msg": "用户不存在"}), 404
+                break
+            except pymysql.err.IntegrityError as e:
+                # 改成已存在的邮箱：语义上是资源唯一性冲突，标准返回 409
+                if e.args[0] == 1062:
+                    return jsonify({"code": 409, "msg": "邮箱已被占用"}), 409
+                return jsonify({"code": 500, "msg": "数据库错误"}), 500
+            except pymysql.err.OperationalError as e:
+                # 遇到死锁(1213)或锁超时(1205)，自动内部重试 1 次（自愈机制）
+                if e.args[0] in (1213, 1205) and attempt == 0:
+                    time.sleep(0.05)
+                    continue
+                # 若重试仍冲突，按照 RFC 规范返回 503 Service Unavailable 伴随 Retry-After 头
+                if e.args[0] in (1213, 1205):
+                    return jsonify({"code": 503, "msg": "服务暂忙，请稍后重试"}), 503, {"Retry-After": "1"}
+                return jsonify({"code": 500, "msg": "数据库操作异常"}), 500
 
         return jsonify({"code": 0, "msg": "更新成功"})
     finally:
